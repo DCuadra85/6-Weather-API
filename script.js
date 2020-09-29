@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     var APIKey = "38ce9d2bdb41501b21e8be2d27c623c6&units=imperial&units=imperial";
     
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=Bujumbura,Burundi&appid=" + APIKey;
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&appid=" + APIKey;
     
     
         $('search-button').on('click', function() {
@@ -20,14 +20,19 @@ $(document).ready(function () {
     
         }).then(function(response) {
             console.log(response);
+            $('#city')
+            $('#icon')
+            $('#temperature')
+            $('#humidity')
+            $('windspeed')
             
         })
             //create classes that auto append based on city searched
             var newCard = $('<div>').addClass('card')
             //icon somehow
-            var temperature = $('<p>').addClass('card-text').text ('Temperature: ' response.main.temp)
-            var humidity = $('<p>').addClass('card-text').text ('Humidity: ' + response.main.humidity)
-            var wind = $('<p>').addClass('card-text').text ('Wind' + response.wind.speed + 'mph')
+            var temperature = $('<p>').addClass('card-text').text ('Temperature: ' response.main.temp 'F')
+            var humidity = $('<p>').addClass('card-text').text ('Humidity: ' + response.main.humidity + '%')
+            var wind = $('<p>').addClass('card-text').text ('Wind: ' + response.wind.speed + 'mph')
     
     })
 
