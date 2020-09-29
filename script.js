@@ -5,13 +5,15 @@ $(document).ready(function () {
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&appid=" + APIKey;
     
     
-        $('search-button').on('click', function() {
+        $('#search-button').on('click', function() {
             console.log(this)
             var citySearch = $('#search-value').val();
             $('#search-value').val('')
         
         })
-     
+        
+        //var searches = JSON.parse(localStorage.getItem("citySearch")) || [] -- this is for when I implement localstorage
+        //
         // function weatherSearch(citySearch) {}
     
         $.ajax({
@@ -20,11 +22,12 @@ $(document).ready(function () {
     
         }).then(function(response) {
             console.log(response);
-            $('#city')
-            $('#icon')
-            $('#temperature')
-            $('#humidity')
-            $('windspeed')
+            $('#city').text(response.name);
+            // $('#icon').attr('src', icon);
+            $('#temperature').text(response.main.temp);
+            $('#humidity').text(response.main.humidity);
+            $('#windspeed').text(response.wind.speed);
+            $('')
             
         })
             //create classes that auto append based on city searched
