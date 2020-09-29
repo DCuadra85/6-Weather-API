@@ -22,7 +22,7 @@ $(document).ready(function () {
     
         }).then(function(response) {
             console.log(response);
-            var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';'
+            var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
             $('#city').text(response.name);
             // $('#icon').attr('src', icon); this is going to be pulled from response.weather[0] array.
             $('#icon').attr('src', weatherIcons)
@@ -36,7 +36,28 @@ $(document).ready(function () {
             var longitude = response.city.coord.lon
             var valueUV = indexUV + '&lat' + latitude + '$lon=' + longitude
             //catch block for errors
-        })
+
+            //UV index calculation
+            function calcUV(queryURL){
+                $.ajax({
+                    url: queryURL,
+                    method: "GET",
+
+                }).then(function(uvValue){
+                    var UV = uvValue.value
+
+                    if (UV <2 ){
+                        $('#UV').text(UV).addClass('low');
+                    }
+                    else if (uv > 5){
+                        $('#UV').text(UV).addClass('high');
+                    }
+                    else {
+                        ${'#UV'}.text(UV).addClass('med');
+                    }
+                })
+            }
+        
             //create classes that auto append based on city searched
 
  
