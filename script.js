@@ -80,13 +80,13 @@ $(document).ready(function () {
     
     }
 
-    //click function
+    //primary click function
     $('#search-button').on('click', function() {
         // console.log(this)
         // event.preventDefault();
         $('current-forecast').empty();
         $('#forecast').empty();
-        citySearch = $('#searchValue').val().toLowerCase().trim();
+        citySearch = $('#searchValue').val().trim();
         var search = JSON.parse(localStorage.getItem('cityValue')) || [];
         search.push(citySearch);
         localStorage.setItem('cityValue', JSON.stringify(search));
@@ -97,6 +97,11 @@ $(document).ready(function () {
         addCity();
     })
 
+    // $('.well').on('click', function(){
+    //     weatherSearch($(this));
+    // })
+
+    //adds button to city history
     function addCity() {
         var search = JSON.parse(localStorage.getItem('cityValue')) || [];
         $('#forecast-history').empty();
