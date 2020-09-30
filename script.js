@@ -1,8 +1,8 @@
 $(document).ready(function () {
 
     var APIKey = "38ce9d2bdb41501b21e8be2d27c623c6&units=imperial&units=imperial";
-    var citySearch = $('#searchValue').val();
-    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&appid=" + APIKey;
+    var citySearch = "";
+    var queryMainURL = "https://api.openweathermap.org/data/2.5/weather?q=&appid=" + APIKey;
     var fiveDay = "api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + APIKey;
     var indexUV = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey;
         
@@ -11,23 +11,23 @@ $(document).ready(function () {
             // console.log(this)
             // event.preventDefault();
             $('current-forecast').empty()
-            searchTerm = $('#searchValue')
-            $('#search-value').val('')
-            var search = JSON.parse(localStorage.getItem("citySearch")) || []
+            citySearch = $('#searchValue').val().toLowerCase().trim();
+            var search = JSON.parse(localStorage.getItem("cityValue")) || []
             search.push(citySearch)
-            localStorage.setItem('citySearch', JSON.stringify(search))
+            localStorage.setItem('cityValue', JSON.stringify(search))
 
+            mainSearch = queryMainURL + "&q=" + citySearch
         })
 
         //
         
         // -- this is for when I implement localstorage
         //
-        // function weatherSearch(citySearch) {}
+
 
         //main ajax to run the weather and record results
 
-        function weatherSearch(queryURL){
+        function weatherSearch(){
         $.ajax({
             url: queryURL,
             method: "GET"
