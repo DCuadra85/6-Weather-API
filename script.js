@@ -1,8 +1,8 @@
 $(document).ready(function () {
 
-    var APIKey = "38ce9d2bdb41501b21e8be2d27c623c6&units=imperial&units=imperial";
+    var APIKey = "38ce9d2bdb41501b21e8be2d27c623c6&units=imperial";
     var citySearch = "";
-    var queryMainURL = "https://api.openweathermap.org/data/2.5/weather?q=&appid=" + APIKey;
+    var queryMainURL = "https://api.openweathermap.org/data/2.5/weather?q=";
     var fiveDay = "api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + APIKey;
     var indexUV = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey;
         
@@ -16,7 +16,10 @@ $(document).ready(function () {
             search.push(citySearch)
             localStorage.setItem('cityValue', JSON.stringify(search))
 
-            mainSearch = queryMainURL + "&q=" + citySearch
+            mainSearch = queryMainURL + citySearch + "&appid=" + APIKey
+
+            weatherSearch(mainSearch);
+
         })
 
         //
@@ -27,64 +30,63 @@ $(document).ready(function () {
 
         //main ajax to run the weather and record results
 
-        function weatherSearch(){
+        function weatherSearch(queryURL){
         $.ajax({
             url: queryURL,
             method: "GET"
     
         }).then(function(response) {
             console.log(response);
-            var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
-            $('#city').text(response.name);
-            // $('#icon').attr('src', icon); this is going to be pulled from response.weather[0] array.
-            $('#icon').attr('src', weatherIcons)
+            // var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
+            $('#city').text(citySearch);            
+            // $('#icon').attr('src', weatherIcons)
             $('#temperature').text(response.main.temp);
             $('#humidity').text(response.main.humidity);
             $('#windspeed').text(response.wind.speed);
-            // $('#UV').text(response.) need lat / long to make this work
+            
             //possible to use Return of lat / long
 
-            var latitude = response.city.coord.lat
-            var longitude = response.city.coord.lon
-            var valueUV = indexUV + '&lat' + latitude + '$lon=' + longitude
+            // var latitude = response.city.coord.lat
+            // var longitude = response.city.coord.lon
+            // var valueUV = indexUV + '&lat' + latitude + '$lon=' + longitude
             //catch block for errors
 
             //UV index calculation
 
-            function calcUV(queryURL){
-                $.ajax({
-                    url: queryURL,
-                    method: "GET",
+            // function calcUV(queryURL){
+            //     $.ajax({
+            //         url: queryURL,
+            //         method: "GET",
 
-                }).then(function(uvValue){
-                    var UV = uvValue.value
+            //     }).then(function(uvValue){
+            //         var UV = uvValue.value
 
-                    if (UV <2 ){
-                        $('#UV').text(UV).addClass('low');
-                    }
-                    else if (UV > 5){
-                        $('#UV').text(UV).addClass('high');
-                    }
-                    else {
-                        $('#UV').text(UV).addClass('med');
-                    }
-                })
-            }
+            //         if (UV <2 ){
+            //             $('#UV').text(UV).addClass('low');
+            //         }
+            //         else if (UV > 5){
+            //             $('#UV').text(UV).addClass('high');
+            //         }
+            //         else {
+            //             $('#UV').text(UV).addClass('med');
+            //         }
+            //     })
+            // }
         
         
 
-        calcUV(valueUV);
+        // calcUV(valueUV);
 
 
         //create future 5 day cards for forecast
 
         for (var i=0; i < 40; i+=8){
-            var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
+            // var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
 
             var newCard = $('<div>').addClass('card text-white bg-info');
             var cardMainBody = $('<div>').addClass('card-body');
-            var cardTitle = $('<div>').addClass('card-title').text(response.list[i].dt_txt);
-            var cardIcon = $('<img>').attr('src', weatherIcons);
+            // var cardTitle = $('<div>').addClass('card-title').text(response.list[i].dt_txt);
+            // var cardIcon = $('<img>').attr('src', weatherIcons);
             var temperature = $('<p>').addClass('card-text').text ('Temperature: ' + response.main.temp + 'F')
             var humidity = $('<p>').addClass('card-text').text ('Humidity: ' + response.main.humidity + '%')
             // var wind = $('<p>').addClass('card-text').text ('Wind: ' + response.wind.speed + 'mph')
