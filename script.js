@@ -48,25 +48,25 @@ $(document).ready(function () {
 
             //UV index calculation
 
-            // function calcUV(queryURL){
-            //     $.ajax({
-            //         url: queryURL,
-            //         method: "GET",
+            function calcUV(queryURL){
+                $.ajax({
+                    url: queryURL,
+                    method: "GET",
 
-            //     }).then(function(uvValue){
-            //         var UV = uvValue.value
+                }).then(function(uvValue){
+                    var UV = uvValue.value
 
-            //         if (UV <2 ){
-            //             $('#UV').text(UV).addClass('low');
-            //         }
-            //         else if (UV > 5){
-            //             $('#UV').text(UV).addClass('high');
-            //         }
-            //         else {
-            //             ${'#UV'}.text(UV).addClass('med');
-            //         }
-            //     })
-            // }
+                    if (UV <2 ){
+                        $('#UV').text(UV).addClass('low');
+                    }
+                    else if (UV > 5){
+                        $('#UV').text(UV).addClass('high');
+                    }
+                    else {
+                        $('#UV').text(UV).addClass('med');
+                    }
+                })
+            }
         
         
 
@@ -82,19 +82,20 @@ $(document).ready(function () {
             var cardMainBody = $('<div>').addClass('card-body');
             var cardTitle = $('<div>').addClass('card-title').text(response.list[i].dt_txt);
             var cardIcon = $('<img>').attr('src', weatherIcons);
-            var temperature = $('<p>').addClass('card-text').text ('Temperature: ' response.main.temp 'F')
+            var temperature = $('<p>').addClass('card-text').text ('Temperature: ' + response.main.temp + 'F')
             var humidity = $('<p>').addClass('card-text').text ('Humidity: ' + response.main.humidity + '%')
-            var wind = $('<p>').addClass('card-text').text ('Wind: ' + response.wind.speed + 'mph')
+            // var wind = $('<p>').addClass('card-text').text ('Wind: ' + response.wind.speed + 'mph')
 
-            newCard.append()
-            card
+            
+            newCard.append(cardTitle, cardMainBody)
+            cardMainBody.append(cardIcon, temperature, humidity)
             $('#forecast').append(newCard)
         
         }
 
     })
 
-}             
+})            
         //global variable - holds value of current city and if user enters same name, stop request
         //
     // Come up with card system to fully show case
