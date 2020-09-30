@@ -25,9 +25,9 @@ $(document).ready(function () {
             
             //possible to use Return of lat / long
   
-            // var latitude = response.city.coord.lat
-            // var longitude = response.city.coord.lon
-            // var valueUV = indexUV + '&lat' + latitude + '$lon=' + longitude
+            var latitude = response.city.coord.lat
+            var longitude = response.city.coord.lon
+            var uv = indexUV + '&lat' + latitude + '$lon=' + longitude
             // // catch block for errors
   
             //UV index calculation
