@@ -37,17 +37,17 @@ $(document).ready(function () {
             //         url: queryURL,
             //         method: "GET",
   
-            //     }).then(function(uvValue){
-            //         var uv = uvValue.value
+            //     }).then(function(uvData){
+            //         var uv = uvData.value
   
             //         if (uv <2 ){
-            //             $('#UV').text(uv).addClass('low');
+            //             $('#uv').text(uv).addClass('low');
             //         }
             //         else if (uv > 5){
-            //             $('#UV').text(uv).addClass('high');
+            //             $('#uv').text(uv).addClass('high');
             //         }
             //         else {
-            //             $('#UV').text(uv).addClass('med');
+            //             $('#uv').text(uv).addClass('med');
             //         }
             //     })
             // }
@@ -105,10 +105,10 @@ $(document).ready(function () {
         }
     }
 
-    $(".listings").on("click", function(){
-
-        var newURL = queryURLBase + "&q=" + this.val()
-        console.log("newURL", newURL)
+    $(".well").on("click", function(){
+        console.log(this);
+        var newURL = queryURLBase + "&q=" + this.val();
+        console.log("newURL", newURL);
     
         weatherSearch(newURL);
     })
