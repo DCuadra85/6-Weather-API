@@ -3,7 +3,6 @@ $(document).ready(function () {
     var APIKey = "38ce9d2bdb41501b21e8be2d27c623c6";
     var citySearch = "";
     var queryMainURL = "https://api.openweathermap.org/data/2.5/forecast?q=";
-    var fiveDay = "api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + APIKey;
     var indexUV = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey;
         //main search when clicked
         $('#search-button').on('click', function() {
@@ -39,12 +38,6 @@ $(document).ready(function () {
             runQuery(newURL);
         })
 
-        //
-        
-        // -- this is for when I implement localstorage
-        //
-
-
         //main ajax to run the weather and record results
 
         function weatherSearch(queryURL){
@@ -63,36 +56,36 @@ $(document).ready(function () {
             
             //possible to use Return of lat / long
 
-            var latitude = response.city.coord.lat
-            var longitude = response.city.coord.lon
-            var valueUV = indexUV + '&lat' + latitude + '$lon=' + longitude
-            // catch block for errors
+            // var latitude = response.city.coord.lat
+            // var longitude = response.city.coord.lon
+            // var valueUV = indexUV + '&lat' + latitude + '$lon=' + longitude
+            // // catch block for errors
 
-            //UV index calculation
+            // //UV index calculation
 
-            function calcUV(queryURL){
-                $.ajax({
-                    url: queryURL,
-                    method: "GET",
+            // function calcUV(queryURL){
+            //     $.ajax({
+            //         url: queryURL,
+            //         method: "GET",
 
-                }).then(function(uvValue){
-                    var UV = uvValue.value
+            //     }).then(function(uvValue){
+            //         var UV = uvValue.value
 
-                    if (UV <2 ){
-                        $('#UV').text(UV).addClass('low');
-                    }
-                    else if (UV > 5){
-                        $('#UV').text(UV).addClass('high');
-                    }
-                    else {
-                        $('#UV').text(UV).addClass('med');
-                    }
-                })
-            }
+            //         if (UV <2 ){
+            //             $('#UV').text(UV).addClass('low');
+            //         }
+            //         else if (UV > 5){
+            //             $('#UV').text(UV).addClass('high');
+            //         }
+            //         else {
+            //             $('#UV').text(UV).addClass('med');
+            //         }
+            //     })
+            // }
         
         
 
-                calcUV(valueUV);
+            //     calcUV(valueUV);
 
 
         //create future 5 day cards for forecast, for loop pulls deeper array
