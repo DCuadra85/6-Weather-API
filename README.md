@@ -58,7 +58,7 @@ This page's function was created through JQuery. The app is a simple weather app
 
 ## Deployed Link
 
-* https://dcuadra85.github.io/5-calender-time-api/
+* https://github.com/DCuadra85/6-Weather-API
 
 
 ## Authors
