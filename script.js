@@ -6,15 +6,21 @@ $(document).ready(function () {
     var fiveDay = "api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + APIKey;
     var indexUV = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey;
         
-    
+        //main search when clicked
         $('#search-button').on('click', function() {
             console.log(this)
+            // event.preventDefault();
             var citySearch = $('#search-value').val();
             $('#search-value').val('')
-        
+            var search = JSON.parse(localStorage.getItem("citySearch")) || []
+            search.push(citySearch)
+            localStorage.setItem('citySearch', JSON.stringify(search))
+
         })
+
+        //
         
-        //var searches = JSON.parse(localStorage.getItem("citySearch")) || [] -- this is for when I implement localstorage
+        // -- this is for when I implement localstorage
         //
         // function weatherSearch(citySearch) {}
 
@@ -42,25 +48,25 @@ $(document).ready(function () {
 
             //UV index calculation
 
-            function calcUV(queryURL){
-                $.ajax({
-                    url: queryURL,
-                    method: "GET",
+            // function calcUV(queryURL){
+            //     $.ajax({
+            //         url: queryURL,
+            //         method: "GET",
 
-                }).then(function(uvValue){
-                    var UV = uvValue.value
+            //     }).then(function(uvValue){
+            //         var UV = uvValue.value
 
-                    if (UV <2 ){
-                        $('#UV').text(UV).addClass('low');
-                    }
-                    else if (UV > 5){
-                        $('#UV').text(UV).addClass('high');
-                    }
-                    else {
-                        ${'#UV'}.text(UV).addClass('med');
-                    }
-                })
-            }
+            //         if (UV <2 ){
+            //             $('#UV').text(UV).addClass('low');
+            //         }
+            //         else if (UV > 5){
+            //             $('#UV').text(UV).addClass('high');
+            //         }
+            //         else {
+            //             ${'#UV'}.text(UV).addClass('med');
+            //         }
+            //     })
+            // }
         
         
 
@@ -73,14 +79,16 @@ $(document).ready(function () {
             var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
 
             var newCard = $('<div>').addClass('card text-white bg-info');
+            var cardMainBody = $('<div>').addClass('card-body');
             var cardTitle = $('<div>').addClass('card-title').text(response.list[i].dt_txt);
-            cardIcon = $('<img>').attr('src', weatherIcons);
+            var cardIcon = $('<img>').attr('src', weatherIcons);
             var temperature = $('<p>').addClass('card-text').text ('Temperature: ' response.main.temp 'F')
             var humidity = $('<p>').addClass('card-text').text ('Humidity: ' + response.main.humidity + '%')
             var wind = $('<p>').addClass('card-text').text ('Wind: ' + response.wind.speed + 'mph')
+
             newCard.append()
+            card
             $('#forecast').append(newCard)
-        
         
         }
 
