@@ -11,14 +11,32 @@ $(document).ready(function () {
             // event.preventDefault();
             $('current-forecast').empty()
             citySearch = $('#searchValue').val().toLowerCase().trim();
-            var search = JSON.parse(localStorage.getItem("cityValue")) || []
-            search.push(citySearch)
-            localStorage.setItem('cityValue', JSON.stringify(search))
+            var search = JSON.parse(localStorage.getItem("cityValue")) || [];
+            search.push(citySearch);
+            localStorage.setItem('cityValue', JSON.stringify(search));
 
-            mainSearch = queryMainURL + citySearch + "&appid=" + APIKey
+            var mainSearch = queryMainURL + citySearch + "&appid=" + APIKey
 
             weatherSearch(mainSearch);
+            addCity();
+        })
 
+        function addCity() {
+            var search = JSON.parse(localStorage.getItem("cityValue")) || [];
+            $('#forecast-history').empty();
+            for (var i = 0; i <search.length; i++){
+                var searchList = search[i];
+                var cityDiv = $('<button').text(searchList).addClass('listings btn btn-block').attr('city-data', searchList).attr('type', 'button')
+                $('#forecast-history').append(cityDiv)
+            }
+        }
+
+        $(".listings").on("click", function(){
+
+            var newURL = queryURLBase + "&q=" + this.val()
+            console.log("newURL", newURL)
+        
+            runQuery(newURL);
         })
 
         //
@@ -38,10 +56,10 @@ $(document).ready(function () {
             console.log(response);
             var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
             $('#city').text(citySearch);            
-            // $('#icon').attr('src', weatherIcons)
+            $('#icon').attr('src', weatherIcons)
             $('#temperature').text("Temperature: " + parseInt((response.list[0].main.temp - 273.15) * 1.80 + 32) + "F");
             $('#humidity').text("Humidity: " + response.list[0].main.humidity + "%");
-            $('#windspeed').text("Wind: " + response.list.wind.speed + "m/s");
+            $('#wind').text("Wind: " + response.list[0].wind.speed + "m/s");
             
             //possible to use Return of lat / long
 
@@ -77,17 +95,17 @@ $(document).ready(function () {
                 calcUV(valueUV);
 
 
-        //create future 5 day cards for forecast
+        //create future 5 day cards for forecast, for loop pulls deeper array
 
         for (var i=0; i < 40; i+=8){
-            // var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
+            var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
 
             var newCard = $('<div>').addClass('card text-white bg-info');
             var cardMainBody = $('<div>').addClass('card-body');
-            // var cardTitle = $('<div>').addClass('card-title').text(response.list[i].dt_txt);
-            // var cardIcon = $('<img>').attr('src', weatherIcons);
-            var temperature = $('<p>').addClass('card-text').text ('Temperature: ' + response.main.temp + 'F')
-            var humidity = $('<p>').addClass('card-text').text ('Humidity: ' + response.main.humidity + '%')
+            var cardTitle = $('<div>').addClass('card-title').text(response.list[i].dt_txt);
+            var cardIcon = $('<img>').attr('src', weatherIcons);
+            var temperature = $('<p>').addClass('card-text').text ('Temperature: ' + parseInt((response.list[0].main.temp - 273.15) * 1.80 + 32) + 'F')
+            var humidity = $('<p>').addClass('card-text').text ('Humidity: ' + response.list[0].main.humidity + '%')
             // var wind = $('<p>').addClass('card-text').text ('Wind: ' + response.wind.speed + 'mph')
 
             
