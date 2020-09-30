@@ -1,11 +1,10 @@
 $(document).ready(function () {
 
-    var APIKey = "38ce9d2bdb41501b21e8be2d27c623c6&units=imperial";
+    var APIKey = "38ce9d2bdb41501b21e8be2d27c623c6";
     var citySearch = "";
-    var queryMainURL = "https://api.openweathermap.org/data/2.5/weather?q=";
+    var queryMainURL = "https://api.openweathermap.org/data/2.5/forecast?q=";
     var fiveDay = "api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + APIKey;
     var indexUV = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey;
-        
         //main search when clicked
         $('#search-button').on('click', function() {
             // console.log(this)
@@ -37,45 +36,45 @@ $(document).ready(function () {
     
         }).then(function(response) {
             console.log(response);
-            // var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
+            var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
             $('#city').text(citySearch);            
             // $('#icon').attr('src', weatherIcons)
-            $('#temperature').text(response.main.temp);
-            $('#humidity').text(response.main.humidity);
-            $('#windspeed').text(response.wind.speed);
+            $('#temperature').text("Temperature: " + parseInt((response.list[0].main.temp - 273.15) * 1.80 + 32) + "F");
+            $('#humidity').text("Humidity: " + response.list[0].main.humidity + "%");
+            $('#windspeed').text("Wind: " + response.list.wind.speed + "m/s");
             
             //possible to use Return of lat / long
 
-            // var latitude = response.city.coord.lat
-            // var longitude = response.city.coord.lon
-            // var valueUV = indexUV + '&lat' + latitude + '$lon=' + longitude
-            //catch block for errors
+            var latitude = response.city.coord.lat
+            var longitude = response.city.coord.lon
+            var valueUV = indexUV + '&lat' + latitude + '$lon=' + longitude
+            // catch block for errors
 
             //UV index calculation
 
-            // function calcUV(queryURL){
-            //     $.ajax({
-            //         url: queryURL,
-            //         method: "GET",
+            function calcUV(queryURL){
+                $.ajax({
+                    url: queryURL,
+                    method: "GET",
 
-            //     }).then(function(uvValue){
-            //         var UV = uvValue.value
+                }).then(function(uvValue){
+                    var UV = uvValue.value
 
-            //         if (UV <2 ){
-            //             $('#UV').text(UV).addClass('low');
-            //         }
-            //         else if (UV > 5){
-            //             $('#UV').text(UV).addClass('high');
-            //         }
-            //         else {
-            //             $('#UV').text(UV).addClass('med');
-            //         }
-            //     })
-            // }
+                    if (UV <2 ){
+                        $('#UV').text(UV).addClass('low');
+                    }
+                    else if (UV > 5){
+                        $('#UV').text(UV).addClass('high');
+                    }
+                    else {
+                        $('#UV').text(UV).addClass('med');
+                    }
+                })
+            }
         
         
 
-        // calcUV(valueUV);
+                calcUV(valueUV);
 
 
         //create future 5 day cards for forecast
