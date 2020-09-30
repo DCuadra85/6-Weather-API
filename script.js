@@ -31,28 +31,28 @@ $(document).ready(function () {
             // // catch block for errors
   
             //UV index calculation
+            
+            function calcUV(queryURL){
+                $.ajax({
+                    url: queryURL,
+                    method: "GET",
   
-            // function calcUV(queryURL){
-            //     $.ajax({
-            //         url: queryURL,
-            //         method: "GET",
+                }).then(function(uvData){
+                    var uv = uvData.value
   
-            //     }).then(function(uvData){
-            //         var uv = uvData.value
+                    if (uv <2 ){
+                        $('#uv').text('UV Index: ' + uv).addClass('low');
+                    }
+                    else if (uv > 5){
+                        $('#uv').text('UV Index: ' + uv).addClass('high');
+                    }
+                    else {
+                        $('#uv').text('UV Index: ' + uv).addClass('med');
+                    }
+                })
+            }
   
-            //         if (uv <2 ){
-            //             $('#uv').text(uv).addClass('low');
-            //         }
-            //         else if (uv > 5){
-            //             $('#uv').text(uv).addClass('high');
-            //         }
-            //         else {
-            //             $('#uv').text(uv).addClass('med');
-            //         }
-            //     })
-            // }
-  
-            //     calcUV(valueUV);
+                calcUV(uv);
             // $('#UV').text("UV:" + UV);
   
         //create future 5 day cards for forecast, for loop pulls deeper array
@@ -63,13 +63,14 @@ $(document).ready(function () {
             var newCard = $('<div>').addClass('card text-white bg-info col-2');
             var cardMainBody = $('<div>').addClass('card-body');
             var cardTitle = $('<div>').addClass('card-title').text(response.list[i].dt_txt);
+            var cardCity = $('<p>').addClass('card-city').text(response.city.name);
             var cardIcon = $('<img>').attr('src', weatherIcons);
             var temperature = $('<p>').addClass('card-text').text ('Temperature: ' + parseInt((response.list[0].main.temp - 273.15) * 1.80 + 32) + 'F')
             var humidity = $('<p>').addClass('card-text').text ('Humidity: ' + response.list[0].main.humidity + '%')
             // var wind = $('<p>').addClass('card-text').text ('Wind: ' + response.wind.speed + 'mph')
   
             
-            newCard.append(cardTitle, cardMainBody)
+            newCard.append(cardTitle, cardCity , cardMainBody)
             cardMainBody.append(cardIcon, temperature, humidity)
             $('#forecast').append(newCard)
         
@@ -83,9 +84,10 @@ $(document).ready(function () {
     $('#search-button').on('click', function() {
         // console.log(this)
         // event.preventDefault();
-        $('current-forecast').empty()
+        $('current-forecast').empty();
+        $('#forecast').empty();
         citySearch = $('#searchValue').val().toLowerCase().trim();
-        var search = JSON.parse(localStorage.getItem("cityValue")) || [];
+        var search = JSON.parse(localStorage.getItem('cityValue')) || [];
         search.push(citySearch);
         localStorage.setItem('cityValue', JSON.stringify(search));
 
@@ -96,11 +98,11 @@ $(document).ready(function () {
     })
 
     function addCity() {
-        var search = JSON.parse(localStorage.getItem("cityValue")) || [];
+        var search = JSON.parse(localStorage.getItem('cityValue')) || [];
         $('#forecast-history').empty();
         for (var i = 0; i < search.length; i++){
             var searchList = search[i];
-            var cityDiv = $('<button>').text(searchList).addClass('well btn btn-block').attr('city-data', searchList).attr('type', 'button')
+            var cityDiv = $('<button>').text(searchList).addClass('well btn btn-secondary btn-block').attr('city-data', searchList).attr('type', 'button')
             $('#forecast-history').append(cityDiv)
         }
     }
