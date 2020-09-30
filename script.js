@@ -5,6 +5,8 @@ $(document).ready(function () {
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&appid=" + APIKey;
     var fiveDay = "api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + APIKey;
     var indexUV = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey;
+        
+    
         $('#search-button').on('click', function() {
             console.log(this)
             var citySearch = $('#search-value').val();
@@ -15,7 +17,8 @@ $(document).ready(function () {
         //var searches = JSON.parse(localStorage.getItem("citySearch")) || [] -- this is for when I implement localstorage
         //
         // function weatherSearch(citySearch) {}
-    
+
+        //main ajax to run the weather and record results
         $.ajax({
             url: queryURL,
             method: "GET"
@@ -38,6 +41,7 @@ $(document).ready(function () {
             //catch block for errors
 
             //UV index calculation
+
             function calcUV(queryURL){
                 $.ajax({
                     url: queryURL,
@@ -49,7 +53,7 @@ $(document).ready(function () {
                     if (UV <2 ){
                         $('#UV').text(UV).addClass('low');
                     }
-                    else if (uv > 5){
+                    else if (UV > 5){
                         $('#UV').text(UV).addClass('high');
                     }
                     else {
@@ -58,26 +62,31 @@ $(document).ready(function () {
                 })
             }
         
-            //create classes that auto append based on city searched
+        
 
- 
+        calcUV(valueUV);
 
 
-        $.ajax({
-            url: fiveDay,
-            method: "GET"
-        // }).then(function (){
-        //     if
-        })
-})
-            // for (var i=0; i<?; i++){
-            // var newCard = $('<div>').addClass('card')
-            // // $('#icon').attr('src', icon); this is going to be pulled from response.weather[0] array.
-            // var temperature = $('<p>').addClass('card-text').text ('Temperature: ' response.main.temp 'F')
-            // var humidity = $('<p>').addClass('card-text').text ('Humidity: ' + response.main.humidity + '%')
-            // var wind = $('<p>').addClass('card-text').text ('Wind: ' + response.wind.speed + 'mph')
-            // }
+        //create future 5 day cards for forecast
 
+        for (var i=0; i < 40; i+=8){
+            var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
+
+            var newCard = $('<div>').addClass('card text-white bg-info');
+            var cardTitle = $('<div>').addClass('card-title').text(response.list[i].dt_txt);
+            cardIcon = $('<img>').attr('src', weatherIcons);
+            var temperature = $('<p>').addClass('card-text').text ('Temperature: ' response.main.temp 'F')
+            var humidity = $('<p>').addClass('card-text').text ('Humidity: ' + response.main.humidity + '%')
+            var wind = $('<p>').addClass('card-text').text ('Wind: ' + response.wind.speed + 'mph')
+            newCard.append()
+            $('#forecast').append(newCard)
+        
+        
+        }
+
+    })
+
+}             
         //global variable - holds value of current city and if user enters same name, stop request
         //
     // Come up with card system to fully show case
