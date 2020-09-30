@@ -17,7 +17,7 @@ $(document).ready(function () {
         }).then(function(response) {
             console.log(response);
             var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
-            $('#city').text(citySearch);            
+            $('#city').text(citySearch + " " + moment().subtract(10, 'days').calendar());            
             $('#icon').attr('src', weatherIcons)
             $('#temperature').text("Temperature: " + parseInt((response.list[0].main.temp - 273.15) * 1.80 + 32) + "F");
             $('#humidity').text("Humidity: " + response.list[0].main.humidity + "%");
@@ -41,13 +41,13 @@ $(document).ready(function () {
                     var uv = uvData.value
   
                     if (uv <2 ){
-                        $('#uv').text('UV Index: ' + uv).addClass('low');
+                        $('#uv').text('UV Index: ' + uv).addClass('btn-success');
                     }
                     else if (uv > 5){
-                        $('#uv').text('UV Index: ' + uv).addClass('high');
+                        $('#uv').text('UV Index: ' + uv).addClass('btn-danger');
                     }
                     else {
-                        $('#uv').text('UV Index: ' + uv).addClass('med');
+                        $('#uv').text('UV Index: ' + uv).addClass('btn-warning');
                     }
                 })
             }
@@ -97,9 +97,6 @@ $(document).ready(function () {
         addCity();
     })
 
-    // $('.well').on('click', function(){
-    //     weatherSearch($(this));
-    // })
 
     //adds button to city history
     function addCity() {
