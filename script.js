@@ -1,16 +1,17 @@
 $(document).ready(function () {
 
     var APIKey = "38ce9d2bdb41501b21e8be2d27c623c6&units=imperial&units=imperial";
-    
+    var citySearch = $('#searchValue').val();
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + citySearch + "&appid=" + APIKey;
     var fiveDay = "api.openweathermap.org/data/2.5/forecast?q=" + citySearch + "&appid=" + APIKey;
     var indexUV = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey;
         
         //main search when clicked
         $('#search-button').on('click', function() {
-            console.log(this)
+            // console.log(this)
             // event.preventDefault();
-            var citySearch = $('#search-value').val();
+            $('current-forecast').empty()
+            searchTerm = $('#searchValue')
             $('#search-value').val('')
             var search = JSON.parse(localStorage.getItem("citySearch")) || []
             search.push(citySearch)
@@ -25,6 +26,8 @@ $(document).ready(function () {
         // function weatherSearch(citySearch) {}
 
         //main ajax to run the weather and record results
+
+        function weatherSearch(queryURL){
         $.ajax({
             url: queryURL,
             method: "GET"
@@ -91,10 +94,10 @@ $(document).ready(function () {
             cardMainBody.append(cardIcon, temperature, humidity)
             $('#forecast').append(newCard)
         
-        }
+            }
 
-    })
-
+        })
+    }
 })            
         //global variable - holds value of current city and if user enters same name, stop request
         //
