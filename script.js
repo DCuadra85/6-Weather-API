@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
     var APIKey = "38ce9d2bdb41501b21e8be2d27c623c6";
+    var addAPIKey = "&appid=38ce9d2bdb41501b21e8be2d27c623c6"
     var citySearch = "";
     var queryMainURL = "https://api.openweathermap.org/data/2.5/forecast?q=";
     var indexUV = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey;
@@ -17,7 +18,7 @@ $(document).ready(function () {
         }).then(function(response) {
             console.log(response);
             var weatherIcons = 'http://openweathermap.org/img/w/' + response.list[0].weather[0].icon + '.png';
-            $('#city').text(citySearch + " " + moment().subtract(10, 'days').calendar());            
+            $('#city').text(citySearch + " " + moment().calendar());            
             $('#icon').attr('src', weatherIcons)
             $('#temperature').text("Temperature: " + parseInt((response.list[0].main.temp - 273.15) * 1.80 + 32) + "F");
             $('#humidity').text("Humidity: " + response.list[0].main.humidity + "%");
@@ -27,7 +28,7 @@ $(document).ready(function () {
   
             var latitude = response.city.coord.lat
             var longitude = response.city.coord.lon
-            var uv = indexUV + '&lat' + latitude + '$lon=' + longitude
+            var uv = indexUV + '&lat=' + latitude + '&lon=' + longitude
             // // catch block for errors
   
             //UV index calculation
@@ -107,17 +108,24 @@ $(document).ready(function () {
             var cityDiv = $('<button>').text(searchList).addClass('well btn btn-secondary btn-block').attr('city-data', searchList).attr('type', 'button')
             $('#forecast-history').append(cityDiv)
         }
+
+        $(".well").on("click", function(){
+            console.log(this);
+            $('current-forecast').empty();
+            $('#forecast').empty();
+            var newURL = queryMainURL + $(this).text() + addAPIKey;
+            console.log("newURL", newURL);
+        
+            weatherSearch(newURL);
+        })
+
     }
 
-    $(".well").on("click", function(){
-        console.log(this);
-        var newURL = queryURLBase + "&q=" + this.val();
-        console.log("newURL", newURL);
-    
-        weatherSearch(newURL);
-    })
-
   })            
+
+//unbind event listener
+
+
         //global variable - holds value of current city and if user enters same name, stop request
         //
     // Come up with card system to fully show case
